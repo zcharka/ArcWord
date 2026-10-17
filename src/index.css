@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --word-blue: #0078d4;
+    --word-blue-hover: #106ebe;
+    --word-blue-active: #005a9e;
+    --bg-dark-window: #1f1f1f;
+    --bg-dark-surface: #2b2b2b;
+    --bg-dark-ribbon: #2d2d2d;
+    --bg-dark-canvas: #1e1e1e;
+    --bg-dark-page: #232323;
+    --border-dark: #3b3b3b;
+    --text-primary: #ffffff;
+    --text-secondary: #adadad;
+    --text-muted: #767676;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark-window);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    user-select: none;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #root {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Custom dark scrollbars like Word */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3e3e3e;
+    border-radius: 4px;
+    border: 2px solid #1e1e1e;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+  }
+}
+
+/* Fluent Motion Keyframes & Animations */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pageOpen {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ribbonDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes backstageIn {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sidebarIn {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flyoutDropdown {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.anim-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-page-open {
+  animation: pageOpen 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-ribbon-down {
+  animation: ribbonDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-backstage-in {
+  animation: backstageIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-backstage-sidebar {
+  animation: sidebarIn 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-tab-switch {
+  animation: tabFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-flyout {
+  animation: flyoutDropdown 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
+/* TipTap Editor Styles & Formatting Enforcements */
+.tiptap-content {
+  outline: none;
+  min-height: 1050px;
+  color: inherit;
+  font-family: 'Calibri', 'Aptos', sans-serif;
+  font-size: 11pt;
+  line-height: 1.15;
+}
+
+.tiptap-content strong,
+.tiptap-content b {
+  font-weight: 700 !important;
+}
+
+.tiptap-content em,
+.tiptap-content i {
+  font-style: italic !important;
+}
+
+.tiptap-content u {
+  text-decoration: underline !important;
+}
+
+.tiptap-content s,
+.tiptap-content strike {
+  text-decoration: line-through !important;
+}
+
+.tiptap-content sub {
+  vertical-align: sub !important;
+  font-size: 0.75em !important;
+}
+
+.tiptap-content sup {
+  vertical-align: super !important;
+  font-size: 0.75em !important;
+}
+
+.tiptap-content p {
+  margin-top: 0;
+  margin-bottom: 8pt;
+}
+
+.tiptap-content h1 {
+  font-size: 20pt;
+  font-weight: 600;
+  color: #2b579a;
+  margin-top: 12pt;
+  margin-bottom: 6pt;
+  line-height: 1.2;
+}
+
+.page-dark .tiptap-content h1 {
+  color: #60a5fa;
+}
+
+.tiptap-content h2 {
+  font-size: 15pt;
+  font-weight: 600;
+  color: #2b579a;
+  margin-top: 10pt;
+  margin-bottom: 4pt;
+  line-height: 1.25;
+}
+
+.page-dark .tiptap-content h2 {
+  color: #93c5fd;
+}
+
+.tiptap-content h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-top: 8pt;
+  margin-bottom: 3pt;
+}
+
+.page-dark .tiptap-content h3 {
+  color: #bfdbfe;
+}
+
+.tiptap-content ul,
+.tiptap-content ol {
+  padding-left: 24pt;
+  margin-top: 0;
+  margin-bottom: 8pt;
+}
+
+.tiptap-content li {
+  margin-bottom: 2pt;
+}
+
+.tiptap-content blockquote {
+  border-left: 3px solid #0078d4;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 12pt;
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.tiptap-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12pt 0;
+  table-layout: fixed;
+}
+
+.tiptap-content table td,
+.tiptap-content table th {
+  border: 1px solid #4a4a4a;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+.page-light .tiptap-content table td,
+.page-light .tiptap-content table th {
+  border: 1px solid #d1d5db;
+}
+
+.tiptap-content table th {
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.page-light .tiptap-content table th {
+  background-color: #f3f4f6;
+}
+
+.tiptap-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 8pt 0;
+}
+
+.tiptap-content hr {
+  border: none;
+  border-top: 1px solid #404040;
+  margin: 16pt 0;
+}
+
+.page-light .tiptap-content hr {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Print Styles */
+@media print {
+  body, #root {
+    background: white !important;
+    color: black !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .printable-document {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  .tiptap-content {
+    color: black !important;
+  }
+}
