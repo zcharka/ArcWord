@@ -9,7 +9,7 @@ export interface ReleaseInfo {
 
 export type UpdateStatus = 'idle' | 'checking' | 'available' | 'up-to-date' | 'error'
 
-export const CURRENT_VERSION = '1.0.0'
+export const CURRENT_VERSION = '1.0.3'
 export const GITHUB_REPO = 'zcharka/ArcWord'
 export const GITHUB_REPO_URL = `https://github.com/${GITHUB_REPO}`
 export const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`

@@ -15,6 +15,7 @@ export const HyperlinkModal: React.FC<HyperlinkModalProps> = ({
 }) => {
   const [text, setText] = useState('')
   const [url, setUrl] = useState('')
+  const [isClosing, setIsClosing] = useState(false)
 
   useEffect(() => {
     if (isOpen && editor) {
@@ -31,10 +32,18 @@ export const HyperlinkModal: React.FC<HyperlinkModalProps> = ({
 
   if (!isOpen || !editor) return null
 
+  const handleAnimatedClose = () => {
+    setIsClosing(true)
+    setTimeout(() => {
+      onClose()
+      setIsClosing(false)
+    }, 200)
+  }
+
   const handleApply = () => {
     if (!url.trim()) {
       editor.chain().focus().extendMarkRange('link').unsetLink().run()
-      onClose()
+      handleAnimatedClose()
       return
     }
 
@@ -52,71 +61,80 @@ export const HyperlinkModal: React.FC<HyperlinkModalProps> = ({
         .setLink({ href: url })
         .run()
     }
-    onClose()
+    handleAnimatedClose()
   }
 
   const handleRemove = () => {
     editor.chain().focus().extendMarkRange('link').unsetLink().run()
-    onClose()
+    handleAnimatedClose()
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="w-[420px] bg-[#2b2b2b] text-neutral-200 border border-neutral-700 rounded shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-        <div className="flex items-center justify-between px-4 py-2.5 bg-[#242424] border-b border-neutral-700">
-          <div className="flex items-center gap-2">
-            <Link2 size={16} className="text-[#0078d4]" />
+    <div
+      className={`fixed inset-0 z-50 bg-black/65 backdrop-blur-md flex items-center justify-center p-4 select-none ${
+        isClosing ? 'anim-backdrop-out' : 'animate-in fade-in duration-200'
+      }`}
+    >
+      <div className="absolute inset-0" onClick={handleAnimatedClose} />
+      <div
+        className={`w-[440px] bg-[#22262f]/95 text-neutral-200 border border-white/10 rounded-xl shadow-[0_24px_70px_rgba(0,0,0,0.85)] overflow-hidden relative z-10 backdrop-blur-xl ${
+          isClosing ? 'anim-modal-out' : 'anim-modal-in'
+        }`}
+      >
+        <div className="flex items-center justify-between px-4 py-3 bg-[#1a1d24]/90 border-b border-white/8">
+          <div className="flex items-center gap-2.5">
+            <Link2 size={16} className="text-[#388bfd]" />
             <span className="text-sm font-semibold text-white">Wstawianie hiperłącza</span>
           </div>
           <button
-            onClick={onClose}
-            className="p-1 hover:bg-neutral-700 rounded text-neutral-400 hover:text-white"
+            onClick={handleAnimatedClose}
+            className="p-1 hover:bg-white/10 rounded text-neutral-400 hover:text-white transition-colors cursor-pointer"
           >
             <X size={15} />
           </button>
         </div>
 
-        <div className="p-4 space-y-3 text-xs">
+        <div className="p-5 space-y-3.5 text-xs">
           <div>
-            <label className="block text-neutral-300 mb-1">Tekst do wyświetlenia:</label>
+            <label className="block text-neutral-300 mb-1.5 font-medium">Tekst do wyświetlenia:</label>
             <input
               type="text"
               value={text}
               onChange={e => setText(e.target.value)}
               placeholder="Wprowadź tekst łącza..."
-              className="w-full bg-[#1e1e1e] border border-neutral-600 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-[#0078d4]"
+              className="w-full bg-[#181b22] border border-white/10 rounded-lg px-3 py-1.5 text-white focus:outline-none focus:border-[#388bfd]"
             />
           </div>
 
           <div>
-            <label className="block text-neutral-300 mb-1">Adres internetowy (URL):</label>
+            <label className="block text-neutral-300 mb-1.5 font-medium">Adres internetowy (URL):</label>
             <input
               type="text"
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://example.com"
-              className="w-full bg-[#1e1e1e] border border-neutral-600 rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-[#0078d4]"
+              className="w-full bg-[#181b22] border border-white/10 rounded-lg px-3 py-1.5 text-white focus:outline-none focus:border-[#388bfd]"
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-between px-4 py-3 bg-[#242424] border-t border-neutral-700">
+        <div className="flex items-center justify-between px-4 py-3 bg-[#1a1d24]/90 border-t border-white/8">
           <button
             onClick={handleRemove}
-            className="px-3 py-1.5 text-xs text-red-400 hover:bg-red-950/40 rounded transition-colors"
+            className="px-3 py-1.5 text-xs text-red-400 hover:bg-red-950/40 rounded-lg transition-colors cursor-pointer"
           >
             Usuń łącze
           </button>
           <div className="flex gap-2">
             <button
               onClick={handleApply}
-              className="px-4 py-1.5 text-xs bg-[#0078d4] hover:bg-[#106ebe] text-white rounded transition-colors font-medium"
+              className="px-4 py-1.5 text-xs bg-[#0078d4] hover:bg-[#106ebe] active:scale-95 text-white rounded-lg transition-all font-medium cursor-pointer shadow-md"
             >
               Wstaw
             </button>
             <button
-              onClick={onClose}
-              className="px-3 py-1.5 text-xs bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded transition-colors"
+              onClick={handleAnimatedClose}
+              className="px-3.5 py-1.5 text-xs bg-neutral-800/80 hover:bg-neutral-700 text-neutral-300 rounded-lg transition-colors cursor-pointer"
             >
               Anuluj
             </button>

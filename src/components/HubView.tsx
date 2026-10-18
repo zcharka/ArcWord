@@ -42,11 +42,13 @@ interface HubViewProps {
   onSaveAs: () => void
   onPrint: () => void
   onExport: () => void
+  onExportPdf?: () => void
   onCloseDocument: () => void
   onOpenFilePicker: () => void
   onOpenAccount: () => void
   onOpenOptions: () => void
   onOpenShare: () => void
+  pageTheme?: 'dark' | 'light'
 }
 
 
@@ -65,12 +67,14 @@ export const HubView: React.FC<HubViewProps> = ({
   onSaveCurrentDoc,
   onSaveAs,
   onPrint,
-  onExport,
+  onExport: _onExport,
+  onExportPdf,
   onCloseDocument,
   onOpenFilePicker,
   onOpenAccount,
   onOpenOptions,
   onOpenShare,
+  pageTheme = 'dark',
 }) => {
   const [activeTab, setActiveTab] = useState<'recent' | 'pinned'>('recent')
   const [showTemplatesSection, setShowTemplatesSection] = useState(true)
@@ -84,6 +88,8 @@ export const HubView: React.FC<HubViewProps> = ({
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const [infoOpen, setInfoOpen] = useState(false)
 
+  const isLight = pageTheme === 'light'
+
   // Dynamic greeting based on current local time
   const currentHour = new Date().getHours()
   const greeting = currentHour < 18 && currentHour >= 5 ? 'Dzień dobry' : 'Dobry wieczór'
@@ -95,9 +101,17 @@ export const HubView: React.FC<HubViewProps> = ({
   const currentDoc = documents.find(d => d.id === currentDocId)
 
   return (
-    <div className="flex-1 flex overflow-hidden bg-[#181818] text-neutral-200 select-none">
+    <div
+      className={`flex-1 flex overflow-hidden ${
+        isLight ? 'bg-[#f0f2f5] text-neutral-800' : 'bg-[#181818] text-neutral-200'
+      } select-none`}
+    >
       {/* LEFT NAVIGATION SIDEBAR */}
-      <div className="anim-backstage-sidebar w-[190px] bg-[#202020] border-r border-[#2b2b2b] flex flex-col justify-between py-2 text-xs shrink-0">
+      <div
+        className={`anim-backstage-sidebar w-[190px] ${
+          isLight ? 'bg-[#f8fafc] border-neutral-300' : 'bg-[#202020] border-[#2b2b2b]'
+        } border-r flex flex-col justify-between py-2 text-xs shrink-0`}
+      >
         <div className="space-y-0.5">
           {/* Back button (Only present in Backstage mode - Screenshot 3 & 1) */}
           {mode === 'backstage' && (
@@ -214,8 +228,14 @@ export const HubView: React.FC<HubViewProps> = ({
               </button>
 
               <button
-                onClick={onExport}
-                className="w-full flex items-center gap-3 px-4 py-2 text-neutral-300 hover:bg-[#2b2b2b] hover:text-white transition-colors text-left cursor-pointer"
+                onClick={() => setActiveNav('export')}
+                className={`w-full flex items-center gap-3 px-4 py-2 transition-colors text-left cursor-pointer ${
+                  activeNav === 'export'
+                    ? 'bg-[#0078d4] text-white font-medium'
+                    : isLight
+                      ? 'text-neutral-700 hover:bg-neutral-200 hover:text-black'
+                      : 'text-neutral-300 hover:bg-[#2b2b2b] hover:text-white'
+                }`}
               >
                 <FileCode size={16} />
                 <span>Eksportuj</span>
@@ -223,7 +243,9 @@ export const HubView: React.FC<HubViewProps> = ({
 
               <button
                 onClick={onCloseDocument}
-                className="w-full flex items-center gap-3 px-4 py-2 text-neutral-300 hover:bg-[#2b2b2b] hover:text-white transition-colors text-left cursor-pointer"
+                className={`w-full flex items-center gap-3 px-4 py-2 ${
+                  isLight ? 'text-neutral-700 hover:bg-neutral-200 hover:text-black' : 'text-neutral-300 hover:bg-[#2b2b2b] hover:text-white'
+                } transition-colors text-left cursor-pointer`}
               >
                 <XCircle size={16} />
                 <span>Zamknij</span>
@@ -234,24 +256,30 @@ export const HubView: React.FC<HubViewProps> = ({
 
 
         {/* Bottom Sidebar Items (Konto, Opinia, Opcje) */}
-        <div className="space-y-0.5 border-t border-neutral-700/60 pt-2 mx-1">
+        <div className={`space-y-0.5 border-t ${isLight ? 'border-neutral-300' : 'border-neutral-700/60'} pt-2 mx-1`}>
           <button
             onClick={onOpenAccount}
-            className="w-full flex items-center gap-3 px-3 py-1.5 text-neutral-300 hover:bg-[#2b2b2b] hover:text-white transition-colors text-left rounded"
+            className={`w-full flex items-center gap-3 px-3 py-1.5 ${
+              isLight ? 'text-neutral-700 hover:bg-neutral-200 hover:text-black' : 'text-neutral-300 hover:bg-[#2b2b2b] hover:text-white'
+            } transition-colors text-left rounded`}
           >
             <User size={15} />
             <span>Konto</span>
           </button>
           <button
             onClick={() => setFeedbackOpen(true)}
-            className="w-full flex items-center gap-3 px-3 py-1.5 text-neutral-300 hover:bg-[#2b2b2b] hover:text-white transition-colors text-left rounded"
+            className={`w-full flex items-center gap-3 px-3 py-1.5 ${
+              isLight ? 'text-neutral-700 hover:bg-neutral-200 hover:text-black' : 'text-neutral-300 hover:bg-[#2b2b2b] hover:text-white'
+            } transition-colors text-left rounded`}
           >
             <MessageSquare size={15} />
             <span>Opinia</span>
           </button>
           <button
             onClick={onOpenOptions}
-            className="w-full flex items-center gap-3 px-3 py-1.5 text-neutral-300 hover:bg-[#2b2b2b] hover:text-white transition-colors text-left rounded"
+            className={`w-full flex items-center gap-3 px-3 py-1.5 ${
+              isLight ? 'text-neutral-700 hover:bg-neutral-200 hover:text-black' : 'text-neutral-300 hover:bg-[#2b2b2b] hover:text-white'
+            } transition-colors text-left rounded`}
           >
             <Settings size={15} />
             <span>Opcje</span>
@@ -259,15 +287,98 @@ export const HubView: React.FC<HubViewProps> = ({
         </div>
       </div>
 
-      {/* MAIN CONTENT AREA: PrintView or Templates & Recent Hub */}
+      {/* MAIN CONTENT AREA: PrintView, ExportView, or Templates & Recent Hub */}
       {activeNav === 'print' ? (
         <PrintView
           docTitle={docTitle || 'Dokument1'}
           docContent={docContent || ''}
           onPrint={onPrint}
         />
+      ) : activeNav === 'export' ? (
+        <div
+          className={`anim-backstage-in flex-1 overflow-y-auto px-12 py-8 space-y-6 ${
+            isLight ? 'bg-white text-neutral-800' : 'bg-[#181818] text-neutral-200'
+          }`}
+        >
+          <div>
+            <h1 className={`text-2xl font-light ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+              Eksportuj
+            </h1>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2 max-w-4xl">
+            {/* PDF Export Option */}
+            <div
+              className={`border rounded-xl p-6 space-y-4 ${
+                isLight ? 'bg-neutral-50 border-neutral-300' : 'bg-[#202020] border-neutral-700'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center font-bold text-lg">
+                  PDF
+                </div>
+                <div>
+                  <h3 className={`text-base font-semibold ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+                    Dokument PDF / XPS
+                  </h3>
+                  <p className="text-xs text-neutral-400">Format dokumentu Adobe PDF (*.pdf)</p>
+                </div>
+              </div>
+              <ul className="text-xs text-neutral-400 space-y-1.5 list-disc pl-4">
+                <li>Zachowuje układ, formatowanie, czcionki i obrazy</li>
+                <li>Idealny do druku i wysyłania drogą elektroniczną</li>
+                <li>Zgodny ze standardem ISO 32000-1</li>
+              </ul>
+              <button
+                onClick={onExportPdf || onPrint}
+                className="w-full py-2.5 px-4 bg-[#0078d4] hover:bg-[#106ebe] active:scale-95 text-white font-medium rounded-lg text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <Download size={14} />
+                <span>Utwórz dokument PDF</span>
+              </button>
+            </div>
+
+            {/* Word DOCX Option */}
+            <div
+              className={`border rounded-xl p-6 space-y-4 ${
+                isLight ? 'bg-neutral-50 border-neutral-300' : 'bg-[#202020] border-neutral-700'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-blue-600/20 text-blue-500 flex items-center justify-center font-bold text-lg">
+                  DOCX
+                </div>
+                <div>
+                  <h3 className={`text-base font-semibold ${isLight ? 'text-neutral-900' : 'text-white'}`}>
+                    Dokument programu Word
+                  </h3>
+                  <p className="text-xs text-neutral-400">Format Microsoft Word (*.docx)</p>
+                </div>
+              </div>
+              <ul className="text-xs text-neutral-400 space-y-1.5 list-disc pl-4">
+                <li>Domyślny format programu ArcWord</li>
+                <li>Możliwość pełnej edycji w Word i LibreOffice</li>
+                <li>Standard OpenXML</li>
+              </ul>
+              <button
+                onClick={onSaveAs}
+                className={`w-full py-2.5 px-4 ${
+                  isLight ? 'bg-neutral-200 hover:bg-neutral-300 text-neutral-900' : 'bg-[#2b2b2b] hover:bg-[#383838] text-white'
+                } active:scale-95 font-medium rounded-lg text-xs shadow-xs transition-all cursor-pointer border ${
+                  isLight ? 'border-neutral-300' : 'border-neutral-600'
+                } flex items-center justify-center gap-2`}
+              >
+                <Download size={14} />
+                <span>Zapisz jako Word (.docx)</span>
+              </button>
+            </div>
+          </div>
+        </div>
       ) : (
-        <div className="anim-backstage-in flex-1 overflow-y-auto px-12 py-8 space-y-8 bg-[#181818]">
+        <div
+          className={`anim-backstage-in flex-1 overflow-y-auto px-12 py-8 space-y-8 ${
+            isLight ? 'bg-[#f0f2f5]' : 'bg-[#181818]'
+          }`}
+        >
           {/* Top Greeting */}
           <div>
             <h1 className="text-2xl font-normal text-white">{greeting}</h1>

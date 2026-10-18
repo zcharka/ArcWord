@@ -21,6 +21,7 @@ interface StatusBarProps {
   onOpenWordCount: () => void
   isFocusMode: boolean
   setIsFocusMode: (focus: boolean) => void
+  pageTheme?: 'dark' | 'light'
 }
 
 export const StatusBar: React.FC<StatusBarProps> = ({
@@ -34,7 +35,10 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   onOpenWordCount,
   isFocusMode,
   setIsFocusMode,
+  pageTheme = 'dark',
 }) => {
+  const isLight = pageTheme === 'light'
+
   const handleZoomIn = () => {
     setZoom(Math.min(200, zoom + 10))
   }
@@ -44,7 +48,13 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   }
 
   return (
-    <div className="h-6 bg-[#1f1f1f] text-neutral-300 flex items-center justify-between px-3 select-none border-t border-[#2b2b2b] text-[11px] shrink-0 z-20">
+    <div
+      className={`h-6 ${
+        isLight
+          ? 'bg-[#f0f2f5] text-neutral-700 border-neutral-300'
+          : 'bg-[#1f1f1f] text-neutral-300 border-[#2b2b2b]'
+      } flex items-center justify-between px-3 select-none border-t text-[11px] shrink-0 z-20`}
+    >
       {/* Left side items */}
       <div className="flex items-center space-x-3">
         <button

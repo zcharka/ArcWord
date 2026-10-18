@@ -1,7 +1,7 @@
 {
   "name": "arcword",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Edytor dokumentów ArcWord w ciemnym motywie Office",
   "author": "Sebastian Rubaj",
   "type": "module",
@@ -56,7 +56,9 @@
     "@tiptap/react": "^3.32.0",
     "@tiptap/starter-kit": "^3.32.0",
     "clsx": "^2.1.1",
+    "docx": "^9.12.0",
     "lucide-react": "^1.59.0",
+    "mammoth": "^1.13.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwind-merge": "^3.7.0"

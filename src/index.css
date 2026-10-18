@@ -299,7 +299,20 @@
   max-width: 100%;
   height: auto;
   border-radius: 4px;
-  margin: 8pt 0;
+  margin: 12pt auto;
+  display: block;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tiptap-content img:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.tiptap-content img.ProseMirror-selectednode {
+  outline: 3px solid #0078d4;
+  outline-offset: 2px;
 }
 
 .tiptap-content hr {
@@ -310,6 +323,175 @@
 
 .page-light .tiptap-content hr {
   border-top: 1px solid #e5e7eb;
+}
+
+/* Watermark styles */
+.doc-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-size: 80px;
+  font-weight: 900;
+  color: rgba(150, 150, 150, 0.12);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  letter-spacing: 0.18em;
+  z-index: 2;
+  text-transform: uppercase;
+}
+
+.page-light .doc-watermark {
+  color: rgba(0, 0, 0, 0.08);
+}
+
+/* Page borders */
+.doc-border-simple {
+  border: 2px solid #555555 !important;
+}
+
+.doc-border-double {
+  border: 4px double #555555 !important;
+}
+
+.doc-border-thick {
+  border: 6px solid #0078d4 !important;
+}
+
+/* Multi-columns */
+.doc-columns-2 .tiptap-content {
+  column-count: 2;
+  column-gap: 28pt;
+  column-rule: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-light .doc-columns-2 .tiptap-content {
+  column-rule: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.doc-columns-3 .tiptap-content {
+  column-count: 3;
+  column-gap: 24pt;
+  column-rule: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-light .doc-columns-3 .tiptap-content {
+  column-rule: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Document Formatting Style Sets (Projektowanie) */
+.style-set-shaded h1 {
+  background: linear-gradient(90deg, #1e3a8a 0%, #0078d4 100%);
+  color: #ffffff !important;
+  padding: 8px 14px;
+  border-radius: 4px;
+  margin-left: -14px;
+  margin-right: -14px;
+}
+
+.style-set-classic h1 {
+  font-family: 'Georgia', 'Garamond', serif !important;
+  font-weight: 400 !important;
+  color: #d1d5db !important;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #4b5563;
+  padding-bottom: 4px;
+}
+
+.style-set-underlined h1 {
+  border-bottom: 2px solid #0078d4;
+  padding-bottom: 6px;
+  color: #60a5fa !important;
+}
+
+.style-set-centered h1 {
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: #93c5fd !important;
+}
+
+.style-set-modern h1 {
+  border-left: 5px solid #0078d4;
+  padding-left: 12px;
+  color: #60a5fa !important;
+}
+
+.style-set-emerald h1 {
+  color: #10b981 !important;
+  border-bottom: 1px solid #047857;
+  padding-bottom: 4px;
+}
+
+.style-set-purple h1 {
+  color: #a78bfa !important;
+  border-left: 4px solid #8b5cf6;
+  padding-left: 10px;
+}
+
+.style-set-warm h1 {
+  color: #f97316 !important;
+  border-bottom: 2px solid #ea580c;
+  padding-bottom: 4px;
+}
+
+/* Glass / Mica styles */
+.glass-panel {
+  background: rgba(30, 34, 43, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-toolbar {
+  background: rgba(26, 29, 37, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass-dropdown {
+  background: #252830 !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Modal Open & Close Keyframes */
+@keyframes modalZoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(12px);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.anim-modal-in {
+  animation: scaleIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-modal-out {
+  animation: modalZoomOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-backdrop-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+.anim-backdrop-out {
+  animation: modalFadeOut 0.2s ease-out forwards;
 }
 
 /* Print Styles */
@@ -339,4 +521,141 @@
   .tiptap-content {
     color: black !important;
   }
+}
+
+/* Light Theme overrides for the entire app */
+.theme-light {
+  --bg-dark-window: #f0f2f5;
+  --bg-dark-surface: #ffffff;
+  --bg-dark-ribbon: #f5f6f8;
+  --bg-dark-canvas: #e5e7eb;
+  --bg-dark-page: #ffffff;
+  --border-dark: #e1e4e8;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  background-color: #f0f2f5 !important;
+  color: #1f2937 !important;
+}
+
+.theme-light ::-webkit-scrollbar-track {
+  background: #f0f2f5;
+}
+.theme-light ::-webkit-scrollbar-thumb {
+  background: #c7cdd4;
+  border: 2px solid #f0f2f5;
+}
+.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #a0a8b2;
+}
+
+.theme-light .bg-\[\#1f1f1f\] {
+  background-color: #f0f2f5 !important;
+}
+
+.theme-light .bg-\[\#14161d\] {
+  background-color: #e5e7eb !important;
+}
+
+.theme-light .bg-\[\#181b22\]\/95,
+.theme-light .bg-\[\#1f232b\]\/95 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .bg-\[\#22262f\]\/95,
+.theme-light .bg-\[\#242831\],
+.theme-light .bg-\[\#252830\],
+.theme-light .glass-panel,
+.theme-light .glass-dropdown {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+.theme-light .text-neutral-100,
+.theme-light .text-neutral-200,
+.theme-light .text-neutral-300 {
+  color: #334155 !important;
+}
+
+.theme-light .text-white {
+  color: #0f172a !important;
+}
+
+.theme-light .text-neutral-400 {
+  color: #64748b !important;
+}
+
+.theme-light .border-white\/6,
+.theme-light .border-white\/8,
+.theme-light .border-white\/10 {
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .hover\:bg-white\/5:hover,
+.theme-light .hover\:bg-white\/10:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.theme-light .hover\:bg-\[\#2e333e\]:hover,
+.theme-light .hover\:bg-\[\#333333\]:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Multi-page Pagination (LibreOffice / Word style) */
+.page-sheet-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.page-break-gap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  background-color: #14161d;
+  position: relative;
+  user-select: none;
+  cursor: default;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.theme-light .page-break-gap {
+  background-color: #e5e7eb;
+}
+
+.page-break-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 8px 0;
+  user-select: none;
+}
+
+.page-indicator-badge {
+  font-size: 10px;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 3px 14px;
+  border-radius: 9999px;
+  background-color: #1e222a;
+  color: #94a3b8;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.theme-light .page-indicator-badge {
+  background-color: #ffffff;
+  color: #475569;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }

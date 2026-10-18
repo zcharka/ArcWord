@@ -26,3 +26,7 @@ installer/
 **/installer/
 build-exe/
 **build-exe/
+
+dist-electron/
+*.exe
+Nowy Dokument tekstowy.txt
