@@ -102,29 +102,61 @@ export const DocumentCanvas: React.FC<DocumentCanvasProps> = ({
         }
       })
 
-      // Second pass: calculate page overflow and adjust element positions
+      // Second pass: place each element into sheets respecting page boundaries
       let currentSheet = 0
-      let maxSheet = 0
 
       for (let i = 0; i < children.length; i++) {
         const child = children[i]
         const childTop = child.offsetTop
-        const targetSheet = Math.floor(childTop / usablePageHeight)
+        const childHeight = child.offsetHeight
 
-        if (targetSheet > currentSheet) {
-          currentSheet = targetSheet
-          const neededShift = currentSheet * sheetStep + topMargin - childTop
+        // The usable bottom boundary of the current sheet
+        const currentSheetBottom = currentSheet * sheetStep + topMargin + usablePageHeight
+
+        // Check for explicit page break (HR or page-break-before)
+        const isExplicitBreak =
+          child.tagName === 'HR' ||
+          child.style.pageBreakBefore === 'always' ||
+          child.classList.contains('page-break')
+
+        if (isExplicitBreak) {
+          currentSheet++
+          const targetTop = currentSheet * sheetStep + topMargin
+          const neededShift = targetTop - childTop
           if (neededShift > 0) {
             child.style.marginTop = `${neededShift}px`
             child.dataset.pageMargin = 'true'
           }
+          continue
         }
-        if (currentSheet > maxSheet) {
-          maxSheet = currentSheet
+
+        // If the element exceeds the current sheet bottom and can fit on the next sheet:
+        if (childTop + childHeight > currentSheetBottom && childHeight <= usablePageHeight) {
+          currentSheet++
+          const targetTop = currentSheet * sheetStep + topMargin
+          const neededShift = targetTop - childTop
+          if (neededShift > 0) {
+            child.style.marginTop = `${neededShift}px`
+            child.dataset.pageMargin = 'true'
+          }
+        } else if (childHeight > usablePageHeight) {
+          // If this single block is taller than an entire page (e.g. huge unbroken wall of text or large table)
+          const sheetsSpanned = Math.floor(childHeight / usablePageHeight)
+          currentSheet += sheetsSpanned
         }
       }
 
-      setPageCount(Math.max(1, maxSheet + 1))
+      // Total page count based on the bottom-most position of the content
+      const lastChild = children[children.length - 1]
+      const totalContentBottom = lastChild ? lastChild.offsetTop + lastChild.offsetHeight : 0
+      const calculatedPages = Math.max(
+        1,
+        currentSheet + 1,
+        Math.ceil(totalContentBottom / sheetStep),
+        Math.ceil((dom.scrollHeight || 0) / usablePageHeight)
+      )
+
+      setPageCount(calculatedPages)
     }
 
     updatePagination()

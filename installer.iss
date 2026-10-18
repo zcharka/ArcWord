@@ -12,7 +12,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=lowest
 DisableProgramGroupPage=yes
 CloseApplications=yes
-DiskSpanning=yes
+ChangesAssociations=yes
 
 [Languages]
 Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"

@@ -11,7 +11,7 @@
     "build": "tsc -b && vite build",
     "start": "electron .",
     "electron:dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
-    "package": "npm run build && npx @electron/packager . ArcWord --platform=win32 --arch=x64 --out=build-exe --overwrite && node scripts/build-installer.cjs",
+    "package": "npm run build && node scripts/package.cjs && node scripts/build-installer.cjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
